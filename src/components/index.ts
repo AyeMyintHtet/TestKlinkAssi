@@ -1,0 +1,5 @@
+export * from './TextCom'
+export * from './headerCom'
+export * from './categoryCom'
+export * from './CardCom'
+export * from './Cart'

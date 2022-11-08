@@ -1,0 +1,7 @@
+export * from './StyledTextCom'
+export * from './StyledGlobal'
+export * from './StyledHeaderCom'
+export * from './StyledCategory'
+export * from './StyledCardCom'
+export * from './StyledCart'
+export * from './StyledOrderCard'
