@@ -1,3 +1,3 @@
 export const configKey: any = {
-  apiUrl: 'local',
+  apiUrl: 'https://klinkapi.herokuapp.com/',
 }

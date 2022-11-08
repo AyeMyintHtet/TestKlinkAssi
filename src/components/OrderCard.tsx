@@ -6,52 +6,34 @@ import Icon from 'assets'
 import { TextCom } from './TextCom'
 import { useCart } from 'hook'
 
-const orderCartMap =[
-    {
-        id: 1,
-        desc: 'Hello Testing',
-        amount:1000,
-        quantity: 1
-    },
-    {
-        id: 2,
-        desc: 'Hello Testing',
-        amount:1000,
-        quantity: 1
-    },
-    {
-        id:3,
-        desc: 'Hello Testing',
-        amount:1000,
-        quantity: 1
-    },
-    {
-        id:4,
-        desc: 'Hello Testing',
-        amount:1000,
-        quantity: 1
-    }
-]
 type OrderCartItem={
     id?:number
     image?:string,
     desc?:string,
-    amount?:number,
+    Amount?:number,
     quantity?:number
 }
 
 export const OrderCard = () => {
-    const {OrderDetail_data,CartAction,dispatch} = useCart()
+    const {AddToCart_data,CartAction,dispatch} = useCart()
+
     useEffect(() => {
-        dispatch(CartAction.OrderDetail(orderCartMap))
+       
       }, [])
+
       const Qtyfunc =async (from:'sub' | 'add',id:number)=>{
-        await dispatch(CartAction.setOrderDetailItem({from,id}))
+        let res = await dispatch(CartAction.setQtyChanges({from,id}))
+        if(res) await dispatch(CartAction.CheckChanges({}))
       }
+      const DeleteItem = async(id:number)=>{
+        let res =await dispatch(CartAction.deleteItem(id))
+        if(res) await dispatch(CartAction.CheckChanges({}))
+      }
+
   return (
     <div>
         {
-            OrderDetail_data?.data?.map((item:OrderCartItem,key:number)=>{
+            AddToCart_data?.map((item:OrderCartItem,key:number)=>{
                 return(
                     <StyledOrderCard>
                         <div className='d-flex gap-3'>
@@ -72,11 +54,11 @@ export const OrderCard = () => {
                                     <AiOutlinePlus/>
                                 </div>
                             </div>
-                            <TextCom color='blue'>{item.amount ? `Ks ${item.amount}`: 'Ks 3000'}</TextCom>
+                            <TextCom color='blue'>{item.Amount ? `Ks ${item.Amount}`: 'Ks 3000'}</TextCom>
                             </div>
                         </div>
                         </div>
-                        <div className='cursor-pointer'>
+                        <div className='cursor-pointer' onClick={()=>DeleteItem(key)}>
                             <AiOutlineClose/>
                         </div>
     </StyledOrderCard>

@@ -6,29 +6,58 @@ const initialState: any = {
     isLoading: false,
     orderDetailVisibile_data:false
   }
-
-const OrderDetail = createAsyncThunk('cartSlice/OrderDetail', async(data:any,thunkAPI)=>{
-  if(data){
-    let total=0;
-    let totalQuantity = 0;
-    data.map((item:any)=>{
-      total += item.quantity * item.amount
-      totalQuantity += item.quantity
-    })
-    let percentage = (total/100) * 5;
-    let totalAmount = total + percentage
-
-    let obj = {
-      totalQuantity,
-      totalAmount,
-      total,
-      percentage,
-      data:[
-        ...data
-      ]
+const AddToCart = createAsyncThunk('cartSlice/AddToCart',async(data:any,thunkAPI:any)=>{
+  let specificOrder = thunkAPI.getState()?.cart?.OrderDetail_data?.data
+  let AddToCart_data = thunkAPI.getState()?.cart?.AddToCart_data
+  console.log('do')
+  if(data >=0){
+    let order = specificOrder[data]
+    let obj :any= []
+    if(AddToCart_data !== undefined){
+      obj = [...AddToCart_data,order]
+    }else{
+      obj = [order]
     }
     return obj
   }
+})
+const CheckChanges = createAsyncThunk('cartSlice/CheckChanges',async(data:any,thunkAPI:any)=>{
+  let AddToCart = thunkAPI?.getState()?.cart?.AddToCart_data
+  if(AddToCart){
+    let totalQty = 0;
+    let total =0;
+    let percent= 0;
+    let finalTotal = 0;
+    AddToCart.map((item:any)=>{
+      totalQty += item.quantity;
+      total += (item.quantity *item.Amount);
+    });
+    percent = Number(((5/ 100) * total).toFixed(2));
+    finalTotal = total + percent;
+    let obj ={
+      total,
+      totalQty,
+      percent,
+      finalTotal
+    }
+    return obj
+  }
+})
+const OrderDetail = createAsyncThunk('cartSlice/OrderDetail', async(data:any,thunkAPI)=>{
+  return serviceController(`${routes.allCart}`)
+    .then((res)=>{
+      if(res?.data){
+        res?.data.map((item:any)=>{
+          item.quantity = 1
+        })
+        let obj ={
+          data:[
+            ...res?.data
+          ]
+        }
+        return obj
+      }
+    })
 })
 
   const cartSlice = createSlice({
@@ -38,14 +67,24 @@ const OrderDetail = createAsyncThunk('cartSlice/OrderDetail', async(data:any,thu
       setOrderDetailVisibile:(state:any,action:any)=>{
         state.orderDetailVisibile_data = !state.orderDetailVisibile_data
       },
-      setOrderDetailItem:(state:any,action:any)=>{
+      setQtyChanges:(state:any,action:any)=>{
         let from = action.payload.from
         let id = action.payload.id
         if(from === 'add'){
-          state.OrderDetail_data.data[id].quantity = state.OrderDetail_data.data[id].quantity + 1
+          state.AddToCart_data[id].quantity = state.AddToCart_data[id].quantity + 1
         }else{
-          if(state.OrderDetail_data.data[id].quantity > 1)state.OrderDetail_data.data[id].quantity = state.OrderDetail_data.data[id].quantity - 1
+          if(state.AddToCart_data[id].quantity > 1)state.AddToCart_data[id].quantity = state.AddToCart_data[id].quantity - 1
         }
+      },
+      deleteItem:(state:any,action:any)=>{
+        console.log('action', action)
+        let obj = []
+        for(let i =0; state.AddToCart_data.length >i;i++){
+          if(i !== action.payload){
+            obj.push(state.AddToCart_data[i])
+          }
+        }
+        state.AddToCart_data = obj
       },
       payNow:(state:any,action:any)=>{
         console.log('first')
@@ -79,7 +118,10 @@ const OrderDetail = createAsyncThunk('cartSlice/OrderDetail', async(data:any,thu
 export default {
     cartSlice:cartSlice.reducer,
     setOrderDetailVisibile:cartSlice.actions.setOrderDetailVisibile,
-    setOrderDetailItem:cartSlice.actions.setOrderDetailItem,
+    setQtyChanges:cartSlice.actions.setQtyChanges,
+    deleteItem:cartSlice.actions.deleteItem,
     payNow:cartSlice.actions.payNow,
-    OrderDetail
+    OrderDetail,
+    CheckChanges,
+    AddToCart
 }

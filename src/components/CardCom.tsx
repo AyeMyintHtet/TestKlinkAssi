@@ -3,14 +3,25 @@ import Icon from 'assets'
 import { TextCom } from './TextCom'
 import { StyledCard } from 'theme'
 import {BsPlusLg} from 'react-icons/bs'
+import { useCart } from 'hook'
 type CardComIProps ={
     image?: string
     desc?:string
-    amount?:string
+    amount?:number
+    itemId:number
+    key:number
 }
-export const CardCom:React.FC<CardComIProps> = ({image,desc,amount,...props}) => {
+export const CardCom:React.FC<CardComIProps> = ({image,desc,amount,itemId,...props}) => {
+  const {CartAction,dispatch} = useCart()
+
+  const AddToCart = async(id:number)=>{
+    
+     let res =  await dispatch(CartAction.AddToCart(id))
+     console.log('res', res)
+    await dispatch(CartAction.CheckChanges({}))
+  }
   return (
-    <StyledCard>
+    <StyledCard onClick={()=>{AddToCart(itemId)}}>
         <div className='hover-eff'>
             <div className="d-flex flex-column w-100 h-100 justify-content-center align-items-center gap-3">
             <BsPlusLg/>

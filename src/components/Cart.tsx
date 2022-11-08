@@ -4,32 +4,6 @@ import { StyledCart } from 'theme'
 import { OrderCard } from './OrderCard'
 import { TextCom } from './TextCom'
 import { useCart } from 'hook'
-const orderCartMap =[
-    {
-        id: 1,
-        desc: 'Hello Testing',
-        amount:1000,
-        quantity: 1
-    },
-    {
-        id: 2,
-        desc: 'Hello Testing',
-        amount:1000,
-        quantity: 1
-    },
-    {
-        id:3,
-        desc: 'Hello Testing',
-        amount:1000,
-        quantity: 1
-    },
-    {
-        id:4,
-        desc: 'Hello Testing',
-        amount:1000,
-        quantity: 1
-    }
-]
 type OrderCartItem={
     id?:number
     image?:string,
@@ -38,11 +12,7 @@ type OrderCartItem={
 }
 export const Cart = () => {
     const {orderDetailVisibile_data} = useCart()
-    const {CartAction,dispatch} = useCart()
-
-useEffect(() => {
-  dispatch(CartAction.OrderDetail(orderCartMap))
-}, [])
+    const {CheckChanges_data,AddToCart_data,CartAction,dispatch} = useCart()
 
     const OrderDetailClose =async ()=>{
       await dispatch(CartAction.setOrderDetailVisibile())
@@ -52,8 +22,11 @@ useEffect(() => {
       }
   return (
     <StyledCart className={`${orderDetailVisibile_data === true ? 'active' : null}`}>
-        <div className="info">
-            <div className='d-flex align-items-center justify-content-between mb-4'>
+        {
+            AddToCart_data.length > 0 ? 
+            <>
+        <div className="info flex-column">
+        <div className='d-flex align-items-center justify-content-between mb-4'>
         <TextCom size='lg' weight='700'>Order details</TextCom>
         <div onClick={()=>OrderDetailClose()} className='cursor-pointer'>
         <AiOutlineClose size={30}/>
@@ -64,20 +37,29 @@ useEffect(() => {
         <div className="total">
             <div className='d-flex justify-content-between py-3  align-items-center'>
                 <TextCom>Subtotal</TextCom>
-                <TextCom color='blue'>Ks 9000</TextCom>
+                <TextCom color='blue'>Ks {CheckChanges_data?.total}</TextCom>
             </div>
             <div className='d-flex justify-content-between py-3  align-items-center'>
                 <TextCom>Tax(5%)</TextCom>
-                <TextCom color='blue'>Ks 450</TextCom>
+                <TextCom color='blue'>Ks {CheckChanges_data?.percent}</TextCom>
             </div>
             <div className='d-flex justify-content-between align-items-center py-3 finalAmount'>
                 <TextCom>Total</TextCom>
-                <TextCom color='blue'>Ks 9000</TextCom>
+                <TextCom color='blue'>Ks {CheckChanges_data?.finalTotal}</TextCom>
             </div>
             <div onClick={()=>Paynow()}>
             <button type="submit">Pay Now</button>
             </div>
         </div>
+            </>
+            :
+            <>
+            <div onClick={()=>OrderDetailClose()} className='cursor-pointer d-flex justify-content-end'>
+                <AiOutlineClose size={30}/>
+            </div>
+            <TextCom className='d-flex justify-content-center align-items-center w-100' style={{height:'100vh'}}>You didn't add To Cart. Please Choose Some Item.</TextCom>
+            </>
+        }
     </StyledCart>
   )
 }
