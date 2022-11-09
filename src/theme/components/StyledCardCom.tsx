@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const StyledCard = styled.div`
+transition: all 0.3s ease;
 margin-bottom: 10px;
 cursor: pointer;
 position: relative;

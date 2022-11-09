@@ -1,8 +1,6 @@
 import axios from 'axios'
 
 import { configKey } from './config'
-// import { authStore } from '../../service'
-
 const client: any = axios.create()
 
 client.interceptors.request.use(async (config?: any) => {

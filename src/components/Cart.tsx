@@ -4,12 +4,6 @@ import { StyledCart } from 'theme'
 import { OrderCard } from './OrderCard'
 import { TextCom } from './TextCom'
 import { useCart } from 'hook'
-type OrderCartItem={
-    id?:number
-    image?:string,
-    desc?:string,
-    amount?:number
-}
 export const Cart = () => {
     const {orderDetailVisibile_data} = useCart()
     const {CheckChanges_data,AddToCart_data,CartAction,dispatch} = useCart()
@@ -22,7 +16,7 @@ export const Cart = () => {
       }
   return (
     <StyledCart className={`${orderDetailVisibile_data === true ? 'active' : null}`}>
-        {
+        {AddToCart_data&&
             AddToCart_data.length > 0 ? 
             <>
         <div className="info flex-column">

@@ -16,8 +16,7 @@ export const CardCom:React.FC<CardComIProps> = ({image,desc,amount,itemId,...pro
 
   const AddToCart = async(id:number)=>{
     
-     let res =  await dispatch(CartAction.AddToCart(id))
-     console.log('res', res)
+     await dispatch(CartAction.AddToCart(id))
     await dispatch(CartAction.CheckChanges({}))
   }
   return (

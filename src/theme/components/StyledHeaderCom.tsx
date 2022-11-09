@@ -2,8 +2,28 @@ import styled from "styled-components";
 
 export const StyledHeader = styled.div`
 padding:20px;
+position: fixed;
+    width: 100%;
+    background: white;
+    z-index: 99;
+    box-shadow: 6px 3px 13px 0px grey;
 .addTocart{
     cursor: pointer;
+    position: relative;
+    .cartTotal{
+    display: inline-block;
+    position: absolute;
+    background: #2c2d87;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    right: -7px;
+    top: -8px;
+    p{
+        color: white;
+        text-align: center;
+    }
+    }
 }
 .header{
     display: flex;

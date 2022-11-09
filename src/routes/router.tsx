@@ -1,10 +1,13 @@
 import React, { Suspense } from 'react'
 import { RouteConfig } from './config'
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { useAuth } from 'hook'
 
 
 const PrivateRoute =({children}:any)=>{
-    let check = true
+    const {AuthUser_data}=useAuth()
+    let check = AuthUser_data ? false : true
+    console.log('check', check)
     if(check){
         return <Navigate to='/login'/>
     }

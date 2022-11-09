@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import serviceController, { routes, routeFilter } from 'controller'
+import serviceController, { routes } from 'controller'
 import { isPendingAction, isFulfilledAction, isRejectedAction } from '../typehandle.action'
 
 const initialState: any = {
@@ -9,7 +9,6 @@ const initialState: any = {
 const AddToCart = createAsyncThunk('cartSlice/AddToCart',async(data:any,thunkAPI:any)=>{
   let specificOrder = thunkAPI.getState()?.cart?.OrderDetail_data?.data
   let AddToCart_data = thunkAPI.getState()?.cart?.AddToCart_data
-  console.log('do')
   if(data >=0){
     let order = specificOrder[data]
     let obj :any= []
@@ -77,7 +76,6 @@ const OrderDetail = createAsyncThunk('cartSlice/OrderDetail', async(data:any,thu
         }
       },
       deleteItem:(state:any,action:any)=>{
-        console.log('action', action)
         let obj = []
         for(let i =0; state.AddToCart_data.length >i;i++){
           if(i !== action.payload){
@@ -87,8 +85,7 @@ const OrderDetail = createAsyncThunk('cartSlice/OrderDetail', async(data:any,thu
         state.AddToCart_data = obj
       },
       payNow:(state:any,action:any)=>{
-        console.log('first')
-        state.OrderDetail_data.data = null
+        state.AddToCart_data = []
       }
     },
     extraReducers: builder => {

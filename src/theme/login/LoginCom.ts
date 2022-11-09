@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const LoginCom = styled.div`
+transition: all 0.3s ease;
 p{
     margin: 0;
     padding: 0;
@@ -28,6 +29,9 @@ height: 100vh;
         p{
             text-align: center;
         }
+        @media(max-width:575px){
+          margin-block:30px;
+        }
     }
 }
 .formDiv{
@@ -37,9 +41,14 @@ height: 100vh;
     justify-content: center;
     align-items: center;
     .login {
-  width: 80%;
+      width: 80%;
+      h1{
+        margin-bottom: 13px;
+      }
+    }
+@media(max-width:575px){
+  margin-top: 30px;
 }
-
 .form {
   background: #FFFFFF;
   border-radius: 10px;

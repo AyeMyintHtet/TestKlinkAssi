@@ -5,9 +5,11 @@ import thunk from 'redux-thunk'
 import storage from 'redux-persist/lib/storage'
 
 import cart from './cart'
+import auth from './auth'
 
 const reducers = combineReducers({
-  cart: cart.cartSlice
+  cart: cart.cartSlice,
+  auth:auth.authSlice
 })
 
 const persistConfig = {
@@ -27,4 +29,5 @@ export const store = rootStore
 export const persist = persistStore(rootStore)
 
 export { default as cart } from './cart'
+export { default as auth } from './auth'
 

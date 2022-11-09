@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledCart = styled.div`
-
+transition: all 0.3s ease;
 position: absolute;
 top: 0;
 right: 0;

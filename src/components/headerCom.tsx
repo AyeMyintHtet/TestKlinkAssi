@@ -9,11 +9,15 @@ import { useCart } from 'hook'
 import { useLocation } from 'react-router-dom'
 
 export const HeaderCom = () => {
-  const {CartAction,dispatch} = useCart()
+  const {AddToCart_data,CartAction,dispatch} = useCart()
   const loc = useLocation()
-  console.log('loc', loc)
   const OrderDetail =async ()=>{
     await dispatch(CartAction.setOrderDetailVisibile())
+  }
+  const checkTotalCart = ()=>{
+    if(AddToCart_data){
+      return AddToCart_data.length
+    }
   }
   return (
     <StyledHeader className={`${loc.pathname ==='/login' ? 'd-none' : null}`}>
@@ -28,8 +32,15 @@ export const HeaderCom = () => {
           <img src={Icon.search} alt="" />
           </div>
         </div>
-        <div className="addTocart" >
-          <AiOutlineShoppingCart size={40} color={'black'} onClick={()=>{OrderDetail()}}/>
+        <div className="addTocart" onClick={()=>{OrderDetail()}}>
+          <AiOutlineShoppingCart size={40} color={'black'} />
+          {
+            checkTotalCart() > 0 ?
+          <div className='cartTotal'>
+          <TextCom>{checkTotalCart()}</TextCom>
+          </div>
+          : null
+          }
         </div>
           </div>
     </section>

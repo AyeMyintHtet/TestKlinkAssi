@@ -3,7 +3,8 @@ import Login from "screen/auth"
 export const RouteConfig =[
     {
         path:'/',
-        element: <Home/>
+        element: <Home/>,
+        protect:true
     },
     {
         path:'/login',

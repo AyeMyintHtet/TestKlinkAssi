@@ -5,9 +5,13 @@ import { LoginCom } from 'theme/login'
 
 import Icon from 'assets'
 import { TextCom } from 'components';
+import { useAuth } from 'hook';
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
+  const {AuthAction,dispatch}= useAuth()
+  const navigate = useNavigate()
   const schema = Yup.object().shape({
     email: Yup.string()
       .required("Email is a required field")
@@ -16,15 +20,15 @@ const Login = () => {
       .required("Password is a required field")
       .min(8, "Password must be at least 8 characters"),
   });
-
-
-
-
+  const FormSubmit= async (values:any)=>{
+    await dispatch(AuthAction.AuthUser(values))
+    navigate('/')
+  }
   return (
     <LoginCom>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-6 info">
+          <div className="col-sm-6 info">
             <div>
             <img className='img-fluid' src={Icon.logo} alt="" />
             </div>
@@ -52,16 +56,13 @@ const Login = () => {
               <p>help@klinkenterprise.com</p>
             </div>
           </div>
-          <div className="col-lg-6">
+          <div className="col-sm-6">
             <div className="formDiv">
               <div className='d-flex justify-content-center align-items-center flex-column w-100'>
               <Formik
         validationSchema={schema}
         initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => {
-          // Alert the input values of the form that we filled
-          alert(JSON.stringify(values));
-        }}
+        onSubmit={(values) => {FormSubmit(values)}}
       >
         {({
           values,

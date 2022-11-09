@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {AiOutlineMinus,AiOutlinePlus,AiOutlineClose}from 'react-icons/ai'
 
 import { StyledOrderCard } from 'theme'

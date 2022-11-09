@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { HomeCom } from 'theme'
-import Icon from 'assets'
-import { CardCom, Cart, CategoryCom, TextCom } from 'components'
+import { CardCom, Cart, CategoryCom } from 'components'
 import { useCart } from 'hook'
 const CategoryArrr = [
   {
